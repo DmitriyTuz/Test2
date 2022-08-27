@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const {User} = require('../models/index')
 
-module.exports = async function (req, res, next) {
+module.exports = async function(req, res, next) {
     if (req.method === "OPTIONS") {
         next()
     }
@@ -22,7 +22,7 @@ module.exports = async function (req, res, next) {
         req.user = user;
         next()
     } catch (e) {
-        res.status(401).json({message: "Не авторизован"})
+        res.status(401).json({message: e.message})
     }
 }
 

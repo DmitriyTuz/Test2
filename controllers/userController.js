@@ -96,7 +96,7 @@ class UserController {
             }
 
             res.cookie('jwt', '', { maxAge: 1}) // решение с удалением токенов из куков
-            return res.json({success: true, message: "Logout successfuly !"})
+            return res.json({message: "Logout успешен !"})
 
         }
     }
