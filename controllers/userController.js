@@ -41,7 +41,7 @@ class UserController {
         await User.update( { tokens: { token } }, {
             where: {id}
         })
-        res.cookie('jwt', token, { httpOnly: true}) // решение с сохранением токена в куки
+        res.cookie('jwt', token, { httpOnly: true}) //решение с сохранением токена в куки
         return res.json({token})
     }
 
@@ -95,7 +95,7 @@ class UserController {
                 })
             }
 
-            res.cookie('jwt', '', { maxAge: 1}) // решение с удалением токенов из куков
+            res.cookie('jwt', '', { maxAge: 1}) //решение с удалением токенов из куков
             return res.json({message: "Logout успешен !"})
 
         }
