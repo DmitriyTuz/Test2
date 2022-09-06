@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken')
 const {User} = require('../models/index')
+const userM = require('../models-mongo/userM')
+
+mongoose = require('mongoose');
 
 module.exports = async function(req, res, next) {
     if (req.method === "OPTIONS") {
@@ -14,15 +17,7 @@ module.exports = async function(req, res, next) {
 
         console.log('decoded = ', decoded)
 
-        // const user = await User.findOne({
-        //     where: { id: decoded.id}
-        // })
-
-        const user = await User.findOne({
-            where: { id: decoded.id }
-        })
-
-        // console.log('user = ', user)
+        const user = await userM.findOne({_id: decoded._id})
 
         // req.user = decoded
         req.user = user;
@@ -31,4 +26,3 @@ module.exports = async function(req, res, next) {
         res.status(401).json({message: e.message})
     }
 }
-

@@ -5,10 +5,11 @@ if (mongoose.connection.readyState === 0) {
 }
 
 var newSchema = new Schema({
-  
-  'name': { type: String },
-  'age': { type: Number },
-  'email': { type: String },
+
+  '_id': { type: String },
+  'password': { type: String },
+  'id_type': { type: String },
+  'tokens': { type: Object },
   'createdAt': { type: Date, default: Date.now },
   'updatedAt': { type: Date, default: Date.now }
 });
@@ -26,4 +27,4 @@ newSchema.pre('findOneAndUpdate', function() {
   this.update({}, { $set: { updatedAt: Date.now() } });
 });
 
-module.exports = mongoose.model('users', newSchema);
+module.exports = mongoose.model('userM', newSchema);
