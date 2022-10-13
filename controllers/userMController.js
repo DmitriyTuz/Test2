@@ -26,31 +26,38 @@ class UserMController {
             return res.status(400).json({message: 'Ошибка при регистрации', errors})
         }
 
-        const {_id, password} = req.body
+        const {id, password} = req.body
         let id_type;
 
-        if(Number(_id)) { id_type = 'phone' } else { id_type = 'email' }
+        if(Number(id)) { id_type = 'phone' } else { id_type = 'email' }
 
-        if (!_id || !password) {
+        if (!id || !password) {
+            res.sendStatus(400)
             return next(ApiError.badRequest('Некорректный ввод'))
         }
-        const candidate = await userM.findOne({_id})
+        const candidate = await userM.findOne({id})
         if (candidate) {
             return next(ApiError.badRequest('Пользователь с таким id уже существует'))
         }
 
         const HashPassword = await workPassword.hashPassword(password)
-        const userRole = await roleM.find({ $or: [{value: "USER"}, {value: "ADMIN"}]})
+        // const userRole = await roleM.find({ $or: [{value: "USER"}, {value: "ADMIN"}]})
         // const userRole = await roleM.find({value: {$in: ["USER", "ADMIN"]}})
         // const userRole = await roleM.findOne({value: "ADMIN"})
 
         // console.log('user._id = ', user._id)
 
-        const user = await userM.create({_id, password: HashPassword, id_type, roles: ["USER", "ADMIN"]})
+        const user = await userM.create({id, password: HashPassword, id_type/*, roles: ["USER", "ADMIN"]*/})
+        let userId = user._id
+        let user1 = await userM.findByIdAndUpdate(
+            userId,
+            { $push: {roles: "632f2d8d30ff62acb33ad55f"} },
+            // { new: true, useFindAndModify: false }
+        )
 
-        const token = generateAccessToken(user._id, user.roles)
+        const token = generateAccessToken(user1._id, user1.roles)
 
-        await userM.findByIdAndUpdate(user._id,{ tokens: token })
+        await userM.findByIdAndUpdate(user1._id,{ tokens: token })
         res.cookie('jwt', token, { httpOnly: true}) //решение с сохранением токена в куки
         return res.json({token})
 
@@ -84,6 +91,7 @@ class UserMController {
         return res.json({message: 'Пользователь авторизован и залогинен !'})
     }
 
+    // получить всех юзеров со всеми id ролей
     async getUsersM(req, res) {
         try {
             const users = await userM.find()
@@ -92,6 +100,20 @@ class UserMController {
         } catch (e) {
             console.log(e)
         }
+    }
+
+    // получить юзера с ролями по id юзера
+    async getUserByIdWithRoles(req, res) {
+        const {_id} = req.query
+        let user = await userM.findById(_id).populate("roles"/*, "-_id -__v -users"*/)
+        return res.json(user)
+    }
+
+    // получить всех юзеров со всеми названиями ролей ролей
+    async getAllUsersWithRolesValues(req, res) {
+        // const {_id} = req.query
+        let user = await userM.find().populate("roles"/*, "-_id -__v -users"*/)
+        return res.json(user)
     }
 }
 

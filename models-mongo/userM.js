@@ -10,11 +10,17 @@ const {Schema, model} = require('mongoose');
 //var newSchema = new Schema({
 
 const UserM = new Schema({
-  _id: { type: String, unique: true, require: true },
+  id: { type: String, unique: true, require: true },
   password: { type: String, require: true },
   id_type: { type: String },
   tokens: { type: Object },
-  roles: [{type: String, ref: 'roleM'}],
+  roles: [
+      {
+        type: Schema.Types.ObjectId,
+        // type: String,
+        ref: 'roleM'
+      }
+  ],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 

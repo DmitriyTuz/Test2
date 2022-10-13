@@ -9,6 +9,7 @@ const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 
 const app = express()
+module.exports = app
 
 // const jwt = require('jsonwebtoken')
 
@@ -27,11 +28,20 @@ app.use(cors())
 app.use(express.json())
 app.use('/', router)
 
-app.get('/hello',  (req,res) => {
+app.get('/hello', async (req,res) => {
+    // res.sendStatus(200)
     // const users = await User.findAll({attributes:["id", "id_type"]})
     // res.status(200).json(users)
-    res.status(200).json({message : "Hello !"})
+    // res.status(200).json({message : "Hello !"})
 })
+
+app.post('/hello1', (req,res) => {
+    res.sendStatus(200)
+    // const users = await User.findAll({attributes:["id", "id_type"]})
+    // res.status(200).json(users)
+    // res.status(200).json({message : "Hello !"})
+})
+
 app.use(errorHandler)
 
 /*app.get('/', (req, res) => {
