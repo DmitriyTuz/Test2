@@ -2,8 +2,15 @@ const Router = require('express')
 const router = new Router()
 const roleMController = require('../controllers/roleMController')
 
+const {check} = require('express-validator')
+
 router.get('/getAll', roleMController.getAll)
-router.get('/getById/:_id', roleMController.getById)
+
+router.get('/getById/:_id',
+    check('id', 'Идентификатор пользователя не может быть пустым !').notEmpty(),
+    roleMController.getById)
+
+router.get('/getByValue/:value', roleMController.getByValue)
 
 router.post('/createRole', roleMController.createRole)
 
@@ -11,6 +18,7 @@ router.put('/addRoleToUser', roleMController.addRoleToUser)
 
 router.delete("/deleteRoleFromUser", roleMController.deleteRoleFromUser)
 router.delete("/deleteAllRolesFromUserWithId", roleMController.deleteAllRolesFromUserWithId)
+router.delete("/deleteRole", roleMController.deleteRole)
 
 router.put("/changeOldRoleOnNewRoleByUserId", roleMController.changeOldRoleOnNewRoleByUserId)
 

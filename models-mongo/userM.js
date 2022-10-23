@@ -12,6 +12,7 @@ const {Schema, model} = require('mongoose');
 const UserM = new Schema({
   id: { type: String, unique: true, require: true },
   password: { type: String, require: true },
+  salary: { type: String, require: true },
   id_type: { type: String },
   tokens: { type: Object },
   roles: [

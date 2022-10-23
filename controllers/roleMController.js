@@ -6,6 +6,7 @@ const mongoose = require('mongoose')
 const ApiError = require('../error/ApiError');
 
 class RoleMController {
+
     async createRole(req, res) {
         const {value} = req.body
         if (!value) {
@@ -23,30 +24,67 @@ class RoleMController {
     async getById(req, res, next) {
 
         try {
-            const _id = req.params._id
+
+            const { _id } = req.params
+            // if ( !_id ) {
+            //     // return res.send('ошибка')
+            //     return res.sendStatus(404)
+            // }
             if ( !_id ) {
-                // return res.send('ошибка')
-                return res.sendStatus(404)
+                return next(ApiError.badRequest('The role with this ID does not exist'))
             }
             const role = await roleM.findById(_id)
+            if (!role) {
+                return next(ApiError.badRequest('This role does not exist in the data base'))
+            }
             return res.json(role)
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
-
-
     }
 
+    async getByValue(req, res, next) {
+
+        try {
+            const { value } = req.params
+            if ( !value ) {
+                // return res.send('ошибка')
+                return res.sendStatus(404)
+            }
+            const role = await roleM.find({value})
+            return res.json(role)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
+    }
+
+    //удалить роль по _id
+
+
     // добавить роль по названию юзеру с id
-    async addRoleToUser(req, res) {
-        const {userId, roleValue} = req.body
-        let role = await roleM.findOne({value: roleValue})
-        let user = await userM.findByIdAndUpdate(
-            userId,
-            { $push: {roles: role._id} },
-            // { new: true, useFindAndModify: false }
-            )
-        return res.json(user)
+    async addRoleToUser(req, res, next) {
+        try {
+            const {userId, roleValue} = req.body
+            if(!userId || !roleValue) {
+                return next(ApiError.badRequest('Некорректный ввод'))
+            }
+            let role = await roleM.findOne({value: roleValue})
+
+            if (!role) {
+                return next(ApiError.badRequest('Такой роли нет в базе'))
+            }
+            let user = await userM.findByIdAndUpdate(
+                userId,
+                { $push: {roles: role._id} },
+                { new: true/*, useFindAndModify: false*/ }
+            ).populate("roles")
+            if (!user) {
+                return next(ApiError.badRequest('Такого пользователя нет в базе'))
+            }
+            return res.json(user)
+        } catch (e) {
+            next(ApiError.badRequest(e.message))
+        }
     }
 
     // изменения роли с одним названием на роль с другим
@@ -75,7 +113,7 @@ class RoleMController {
 
     // удалить роль по названию у юзера с id
     async deleteRoleFromUser(req, res) {
-        const {userId, roleValue} = req.query
+        const {userId, roleValue} = req.body
         let role = await roleM.findOne({value: roleValue})
         let user = await UserM.findOne({_id: userId})
         let result = await UserM.update(
@@ -101,9 +139,14 @@ class RoleMController {
             )
         }
         return res.json(result)
-    };
+    }
 
     // удалить роль по названию
+    async deleteRole(req, res) {
+        const {roleValue} = req.query
+        const roles = await roleM.deleteOne({value: roleValue})
+        return res.json(roles)
+    }
 
 }
 

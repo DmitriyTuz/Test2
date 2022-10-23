@@ -2,47 +2,22 @@ require('dotenv').config()
 const express = require('express')
 const http = require("http")
 const cors = require('cors')
-
 const mongoose = require("mongoose")
-
 const router = require('./routes/index')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 
-const app = express()
+const createMyServer = require('./utils/server')
+const app = createMyServer()
 module.exports = app
 
-// const jwt = require('jsonwebtoken')
-
+// const app = express()
 const server = http.createServer(app)
-
 const PORT = 5000
 
-const {User} = require('./models/index')
-const {userM} = require('./models-mongo/userM')
-
-// app.use(cors({
-//     origin: '*'
-// }));
-
-app.use(cors())
-app.use(express.json())
-app.use('/', router)
-
-app.get('/hello', async (req,res) => {
-    // res.sendStatus(200)
-    // const users = await User.findAll({attributes:["id", "id_type"]})
-    // res.status(200).json(users)
-    // res.status(200).json({message : "Hello !"})
-})
-
-app.post('/hello1', (req,res) => {
-    res.sendStatus(200)
-    // const users = await User.findAll({attributes:["id", "id_type"]})
-    // res.status(200).json(users)
-    // res.status(200).json({message : "Hello !"})
-})
-
-app.use(errorHandler)
+// app.use(cors())
+// app.use(express.json())
+// app.use('/', router)
+// app.use(errorHandler)
 
 /*app.get('/', (req, res) => {
     res.status(200).json({message: 'WORKING !!!'})
