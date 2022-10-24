@@ -20,5 +20,6 @@ router.post('/createUserMongo',
 router.post('/signinMongo', authMiddlewareMongo, userMController.loginMongo)
 
 router.delete("/deleteUser", userMController.deleteUser)
+router.delete("/deleteUserById", userMController.deleteUserById)
 
 module.exports = router

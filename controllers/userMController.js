@@ -116,10 +116,17 @@ class UserMController {
         return res.json(user.roles)
     }
 
-    // удалить юзера по id
+    // удалить юзера по _id
     async deleteUser(req, res) {
         const {_id} = req.query
         const user = await userM.deleteOne({_id: _id})
+        return res.json(user)
+    }
+
+    // удалить юзера по id
+    async deleteUserById(req, res) {
+        const {id} = req.query
+        const user = await userM.deleteOne({id})
         return res.json(user)
     }
 }

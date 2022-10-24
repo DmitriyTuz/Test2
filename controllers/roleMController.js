@@ -142,10 +142,10 @@ class RoleMController {
     }
 
     // удалить роль по названию
-    async deleteRole(req, res) {
-        const {roleValue} = req.query
-        const roles = await roleM.deleteOne({value: roleValue})
-        return res.json(roles)
+    async deleteRoleByValue(req, res) {
+        const {value} = req.body
+        const role = await roleM.deleteOne({value})
+        return res.json(role)
     }
 
 }

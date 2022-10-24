@@ -18,7 +18,7 @@ router.put('/addRoleToUser', roleMController.addRoleToUser)
 
 router.delete("/deleteRoleFromUser", roleMController.deleteRoleFromUser)
 router.delete("/deleteAllRolesFromUserWithId", roleMController.deleteAllRolesFromUserWithId)
-router.delete("/deleteRole", roleMController.deleteRole)
+router.delete("/deleteRoleByValue", roleMController.deleteRoleByValue)
 
 router.put("/changeOldRoleOnNewRoleByUserId", roleMController.changeOldRoleOnNewRoleByUserId)
 
