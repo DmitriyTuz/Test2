@@ -125,7 +125,7 @@ class UserMController {
 
     // удалить юзера по id
     async deleteUserById(req, res) {
-        const {id} = req.query
+        const {id} = req.body
         const user = await userM.deleteOne({id})
         return res.json(user)
     }

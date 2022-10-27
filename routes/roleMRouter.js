@@ -14,10 +14,12 @@ router.get('/getByValue/:value', roleMController.getByValue)
 
 router.post('/createRole', roleMController.createRole)
 
+router.put('/changeRoleValueById', roleMController.changeRoleValueById)
 router.put('/addRoleToUser', roleMController.addRoleToUser)
 
 router.delete("/deleteRoleFromUser", roleMController.deleteRoleFromUser)
 router.delete("/deleteAllRolesFromUserWithId", roleMController.deleteAllRolesFromUserWithId)
+router.delete("/deleteRoleById/:_id", roleMController.deleteRoleById)
 router.delete("/deleteRoleByValue", roleMController.deleteRoleByValue)
 
 router.put("/changeOldRoleOnNewRoleByUserId", roleMController.changeOldRoleOnNewRoleByUserId)
