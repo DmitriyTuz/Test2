@@ -1,3 +1,7 @@
+require('dotenv').config()
+const mongoose = require('mongoose')
+const roleM = require('./models-mongo/roleM')
+
 //  // !!! функция для проверки скорости запросов монги
 //
 // require('dotenv').config()
@@ -87,17 +91,54 @@
 //     }
 // })()
 
-require('dotenv').config()
-const mongoose = require('mongoose')
-const roleM = require('./models-mongo/roleM')
+//                      * * *
 
-mongoose.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false })
+// mongoose.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false })
+//
+// const roleBefore = async () => {
+//     const {_id} = await roleM.findOne({_id: '63558830aa985a90d78df617'})
+//     console.log('_id = ', _id)
+//     // return  _id
+// }
+//
+// // console.log('--->>>', await roleBefore())
+// roleBefore()
 
-const roleBefore = async () => {
-    const {_id} = await roleM.findOne({_id: '63558830aa985a90d78df617'})
-    console.log('_id = ', _id)
-    // return  _id
+//                      * * *
+
+// let ar = [1, 2, 3]
+// console.log(Array.isArray(ar))
+
+//                      * * *
+
+
+// const start = async () => {
+//     await mongoose.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false })
+//
+//     const beforeRole = async () => {
+//             const result = await roleM.findOne({_id: '63558830aa985a90d78df617'})
+//         }
+//      ;(async () => {
+//         const users = await beforeRole()
+//         console.log(users)
+//     })()
+// }
+// start()
+
+let role
+
+const start = async () => {
+
+    await mongoose.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false })
+    role = await roleM.findOne({_id: '63558830aa985a90d78df617'})
+    await mongoose.disconnect()
+    return role
+
 }
 
-// console.log('--->>>', await roleBefore())
-roleBefore()
+let a = async () => {
+    await start()
+    console.log(role)
+}
+
+a()

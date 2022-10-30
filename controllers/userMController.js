@@ -113,7 +113,7 @@ class UserMController {
     async getAllUsersWithRolesValues(req, res) {
         // const {_id} = req.query
         let user = await userM.find().populate("roles"/*, "-_id -__v -users"*/)
-        return res.json(user.roles)
+        return res.json(user)
     }
 
     // удалить юзера по _id

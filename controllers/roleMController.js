@@ -21,18 +21,10 @@ class RoleMController {
         return res.json(roles)
     }
 
-    async getById(req, res, next) {
+    async getBy_Id(req, res, next) {
 
         try {
-
             const { _id } = req.params
-            // if ( !_id ) {
-            //     // return res.send('ошибка')
-            //     return res.sendStatus(404)
-            // }
-            // if ( !_id ) {
-            //     return next(ApiError.badRequest('The role with this ID does not exist'))
-            // }
             if ( _id.length !== 24 )
                 return next(ApiError.badRequest('Not correct input user ID'))
 

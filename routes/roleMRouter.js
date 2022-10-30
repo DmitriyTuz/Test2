@@ -6,9 +6,9 @@ const {check} = require('express-validator')
 
 router.get('/getAll', roleMController.getAll)
 
-router.get('/getById/:_id',
+router.get('/getBy_Id/:_id',
     check('id', 'Идентификатор пользователя не может быть пустым !').notEmpty(),
-    roleMController.getById)
+    roleMController.getBy_Id)
 
 router.get('/getByValue/:value', roleMController.getByValue)
 
